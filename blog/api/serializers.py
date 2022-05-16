@@ -4,6 +4,12 @@ from blog.models import Post, Tag, Comment
 from blango_auth.models import User
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+
 class TagField(serializers.SlugRelatedField):
     def to_internal_value(self, data):
         try:
@@ -29,7 +35,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-  tags = serializers.SlugRelatedField(
+  tags = TagField(
     slug_field="value", many=True, queryset=Tag.objects.all()
   )
 
